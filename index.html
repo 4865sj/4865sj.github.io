@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Academic homepage of Jiwon Heo, a quantum information researcher at KAIST."
+  >
+
+  <title>Jiwon Heo</title>
+
+  <style>
+    :root {
+      --text: #202124;
+      --muted: #5f6368;
+      --line: #dadce0;
+      --link: #174ea6;
+      --background: #ffffff;
+      --soft-background: #f8f9fa;
+      --max-width: 880px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 72px 0 36px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .position {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 28px;
+      font-size: 0.98rem;
+    }
+
+    main {
+      padding: 18px 0 80px;
+    }
+
+    section {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 1.5rem;
+      letter-spacing: -0.015em;
+    }
+
+    h3 {
+      margin: 0 0 5px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 15px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 22px;
+    }
+
+    .links a {
+      font-weight: 600;
+    }
+
+    .item {
+      margin-bottom: 25px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .item p {
+      margin: 3px 0;
+    }
+
+    .authors,
+    .venue,
+    .description {
+      color: var(--muted);
+    }
+
+    .paper-links {
+      margin-top: 5px;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      padding: 28px 0 48px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding-top: 45px;
+      }
+
+      body {
+        font-size: 16px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>Jiwon Heo</h1>
+
+      <p class="position">
+        Integrated M.S.–Ph.D. Student<br>
+        Graduate School of Quantum Science and Technology, KAIST
+      </p>
+
+      <div class="links">
+        <a href="mailto:4865sj@gmail.com">Email</a>
+
+        <a
+          href="https://github.com/4865sj"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+
+        <a
+          href="https://scholar.google.com/citations?user=rID1I50AAAAJ&hl=ko"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Google Scholar
+        </a>
+
+        <a href="cv.pdf">CV</a>
+      </div>
+
+      <nav>
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about">
+      <h2>About</h2>
+
+      <p>
+        I am an integrated M.S.–Ph.D. student at KAIST working on
+        quantum information theory.
+      </p>
+
+      <p>
+        My research focuses on the classical simulation, learning,
+        and computational complexity of quantum systems, particularly
+        fermionic quantum systems.
+      </p>
+    </section>
+
+    <section id="research">
+      <h2>Research interests</h2>
+
+      <ul>
+        <li>Classical simulation of quantum systems</li>
+        <li>Fermionic quantum computation</li>
+        <li>Quantum learning and verification</li>
+        <li>Sampling complexity and anticoncentration</li>
+        <li>Noisy quantum computation</li>
+      </ul>
+    </section>
+
+    <section id="publications">
+      <h2>Publications and preprints</h2>
+
+      <!--
+      논문이 생기면 아래 블록을 복사해서 사용하세요.
+
+      <article class="item">
+        <h3>Title of the paper</h3>
+
+        <p class="authors">
+          Jiwon Heo, Coauthor One, and Coauthor Two
+        </p>
+
+        <p class="venue">
+          arXiv preprint, 2026
+        </p>
+
+        <p class="description">
+          A one-sentence explanation of the main result.
+        </p>
+
+        <p class="paper-links">
+          <a href="ARXIV_URL">arXiv</a>
+          ·
+          <a href="PDF_URL">PDF</a>
+          ·
+          <a href="CODE_URL">Code</a>
+          ·
+          <a href="SLIDES_URL">Slides</a>
+        </p>
+      </article>
+      -->
+
+      <p>
+        An up-to-date publication list is available on my
+        <a
+          href="YOUR_GOOGLE_SCHOLAR_URL"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Google Scholar profile
+        </a>.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+
+      <p>
+        Email:
+        <a href="mailto:4865sj@gmail.com">
+          4865sj@gmail.com
+        </a>
+      </p>
+
+      <p>
+        Korea Advanced Institute of Science and Technology,
+        Daejeon, Republic of Korea
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Jiwon Heo
+    </div>
+  </footer>
+</body>
+</html>
