@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src https://atdqvkkpnupphxrdoawq.supabase.co; base-uri 'none'; form-action 'self'; object-src 'none'; frame-src 'none'"
+  >
+  <meta
+    name="description"
+    content="About Jiwon Heo, a quantum information researcher at KAIST."
+  >
+  <meta name="theme-color" content="#173a5e">
+
+  <title>About me | Jiwon Heo</title>
+
+  <link rel="stylesheet" href="style.css?v=20260813-8">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="title-block">
+    <div class="title-panel">
+      <div class="container">
+        <h1><a class="site-title-link" href="index.html">Jiwon Heo</a></h1>
+
+        <nav aria-label="Contact and academic profiles">
+          <ul class="profile-links">
+            <li><a href="mailto:4865sj@gmail.com">Email</a></li>
+            <li>
+              <a
+                href="https://github.com/4865sj"
+                aria-label="GitHub (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >GitHub</a>
+            </li>
+            <li>
+              <a
+                href="https://kr.linkedin.com/in/4865sj"
+                aria-label="LinkedIn (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >LinkedIn</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <nav class="category-nav" aria-label="Pages">
+      <div class="container">
+        <ul class="category-links">
+          <li><a href="about.html" aria-current="page">About me</a></li>
+          <li><a href="publications.html">Publication lists</a></li>
+          <li><a href="presentations.html">Presentation</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="board.html">Board</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <aside class="message-card" aria-labelledby="message-card-title">
+    <p class="message-label">Board</p>
+    <form
+      class="message-form"
+      action="board.html"
+      method="post"
+      data-message-form="top-level"
+    >
+      <label id="message-card-title" class="message-title" for="about-message">
+        Leave a message
+      </label>
+      <textarea
+        id="about-message"
+        name="message"
+        rows="4"
+        maxlength="2000"
+        aria-describedby="about-message-note about-message-count"
+        data-message-body
+        required
+      ></textarea>
+      <div class="message-form-meta">
+        <span id="about-message-note" data-session-note>Google sign-in required.</span>
+        <span id="about-message-count" data-message-count>0 / 2000</span>
+      </div>
+      <button
+        class="button message-submit"
+        type="submit"
+        data-message-submit
+        data-signed-in-label="Post to Board"
+      >Sign in &amp; post</button>
+      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
+  <main id="main-content">
+    <section class="content-section" aria-labelledby="about-title">
+      <div class="section-layout container">
+        <header class="section-heading">
+          <h2 id="about-title">About me</h2>
+        </header>
+
+        <div class="section-content about-content">
+          <p>Hello, I study quantum information theory.</p>
+          <p class="about-links"><a href="cv.pdf">CV (PDF)</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content container">
+      <p>&copy; Jiwon Heo</p>
+      <p>Last update: 2026.08.12</p>
+    </div>
+  </footer>
+
+  <script src="board.js?v=20260813-7" defer></script>
+</body>
+</html>

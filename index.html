@@ -1,324 +1,378 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src https://atdqvkkpnupphxrdoawq.supabase.co; base-uri 'none'; form-action 'self'; object-src 'none'; frame-src 'none'"
   >
-
   <meta
     name="description"
     content="Academic homepage of Jiwon Heo, a quantum information researcher at KAIST."
   >
+  <meta name="theme-color" content="#173a5e">
 
   <title>Jiwon Heo</title>
 
-  <style>
-    :root {
-      --text: #202124;
-      --muted: #5f6368;
-      --line: #dadce0;
-      --link: #174ea6;
-      --background: #ffffff;
-      --soft-background: #f8f9fa;
-      --max-width: 880px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--background);
-      color: var(--text);
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-      font-size: 17px;
-      line-height: 1.7;
-    }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      width: min(var(--max-width), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    header {
-      padding: 72px 0 36px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-    }
-
-    .position {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 28px;
-      font-size: 0.98rem;
-    }
-
-    main {
-      padding: 18px 0 80px;
-    }
-
-    section {
-      padding: 34px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    section:last-child {
-      border-bottom: none;
-    }
-
-    h2 {
-      margin: 0 0 18px;
-      font-size: 1.5rem;
-      letter-spacing: -0.015em;
-    }
-
-    h3 {
-      margin: 0 0 5px;
-      font-size: 1.05rem;
-    }
-
-    p {
-      margin: 0 0 15px;
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 22px;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 18px;
-      margin-top: 22px;
-    }
-
-    .links a {
-      font-weight: 600;
-    }
-
-    .item {
-      margin-bottom: 25px;
-    }
-
-    .item:last-child {
-      margin-bottom: 0;
-    }
-
-    .item p {
-      margin: 3px 0;
-    }
-
-    .authors,
-    .venue,
-    .description {
-      color: var(--muted);
-    }
-
-    .paper-links {
-      margin-top: 5px;
-      font-size: 0.95rem;
-    }
-
-    footer {
-      padding: 28px 0 48px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--line);
-    }
-
-    @media (max-width: 600px) {
-      header {
-        padding-top: 45px;
-      }
-
-      body {
-        font-size: 16px;
-      }
-
-      section {
-        padding: 28px 0;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css?v=20260813-8">
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <h1>Jiwon Heo</h1>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-      <p class="position">
-        Integrated M.S.–Ph.D. Student<br>
-        Graduate School of Quantum Science and Technology, KAIST
-      </p>
+  <header class="title-block">
+    <div class="title-panel">
+      <div class="container">
+        <h1><a class="site-title-link" href="index.html">Jiwon Heo</a></h1>
 
-      <div class="links">
-        <a href="mailto:4865sj@gmail.com">Email</a>
-
-        <a
-          href="https://github.com/4865sj"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-
-        <a
-          href="https://scholar.google.com/citations?user=rID1I50AAAAJ&hl=ko"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Google Scholar
-        </a>
-
-        <a href="cv.pdf">CV</a>
+        <nav aria-label="Contact and academic profiles">
+          <ul class="profile-links">
+            <li><a href="mailto:4865sj@gmail.com">Email</a></li>
+            <li>
+              <a
+                href="https://github.com/4865sj"
+                aria-label="GitHub (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >GitHub</a>
+            </li>
+            <li>
+              <a
+                href="https://kr.linkedin.com/in/4865sj"
+                aria-label="LinkedIn (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >LinkedIn</a>
+            </li>
+          </ul>
+        </nav>
       </div>
-
-      <nav>
-        <a href="#about">About</a>
-        <a href="#research">Research</a>
-        <a href="#publications">Publications</a>
-        <a href="#contact">Contact</a>
-      </nav>
     </div>
+
+    <nav class="category-nav" aria-label="Pages">
+      <div class="container">
+        <ul class="category-links">
+          <li><a href="about.html">About me</a></li>
+          <li><a href="publications.html">Publication lists</a></li>
+          <li><a href="presentations.html">Presentation</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="board.html">Board</a></li>
+        </ul>
+      </div>
+    </nav>
   </header>
 
-  <main class="container">
-    <section id="about">
-      <h2>About</h2>
+  <aside class="message-card" aria-labelledby="message-card-title">
+    <p class="message-label">Board</p>
+    <form
+      class="message-form"
+      action="board.html"
+      method="post"
+      data-message-form="top-level"
+    >
+      <label id="message-card-title" class="message-title" for="index-message">
+        Leave a message
+      </label>
+      <textarea
+        id="index-message"
+        name="message"
+        rows="4"
+        maxlength="2000"
+        aria-describedby="index-message-note index-message-count"
+        data-message-body
+        required
+      ></textarea>
+      <div class="message-form-meta">
+        <span id="index-message-note" data-session-note>Google sign-in required.</span>
+        <span id="index-message-count" data-message-count>0 / 2000</span>
+      </div>
+      <button
+        class="button message-submit"
+        type="submit"
+        data-message-submit
+        data-signed-in-label="Post to Board"
+      >Sign in &amp; post</button>
+      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+    </form>
+  </aside>
 
-      <p>
-        I am an integrated M.S.–Ph.D. student at KAIST working on
-        quantum information theory.
-      </p>
+  <main id="main-content">
+    <section class="puzzle-section" aria-labelledby="puzzle-title">
+      <div class="puzzle-content container">
+        <header class="puzzle-heading">
+          <div class="puzzle-heading-row">
+            <h2 id="puzzle-title">Sliding puzzle</h2>
+            <a
+              class="puzzle-heading-link"
+              href="leaderboard.html"
+            >Leaderboard</a>
+          </div>
+          <p>Choose an image!</p>
+        </header>
 
-      <p>
-        My research focuses on the classical simulation, learning,
-        and computational complexity of quantum systems, particularly
-        fermionic quantum systems.
-      </p>
-    </section>
+        <ul class="puzzle-gallery" data-puzzle-gallery>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-random
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with a random image"
+            >
+              <span class="puzzle-random-icon" aria-hidden="true">?</span>
+              <span>Random</span>
+            </button>
+          </li>
+          <li data-puzzle-test-choice hidden>
+            <button
+              class="puzzle-choice puzzle-choice--test"
+              type="button"
+              data-puzzle-test
+              data-puzzle-image="puzzle-images/Admin-test.png"
+              data-puzzle-key="admin-test"
+              data-puzzle-name="Admin test"
+              aria-controls="puzzle-game"
+              aria-label="Start the one-move administrator test puzzle"
+            >
+              <img
+                src="puzzle-images/Admin-test.png"
+                alt=""
+                width="1254"
+                height="1254"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>Admin test</span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-image="puzzle-images/Speaki.png"
+              data-puzzle-key="speaki"
+              data-puzzle-name="Speaki"
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with Speaki"
+            >
+              <img
+                src="puzzle-images/Speaki.png"
+                alt=""
+                width="1312"
+                height="1199"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>Speaki</span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-image="puzzle-images/Furina.jpg"
+              data-puzzle-key="furina"
+              data-puzzle-name="Furina"
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with Furina"
+            >
+              <img
+                src="puzzle-images/Furina.jpg"
+                alt=""
+                width="1200"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>Furina</span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-image="puzzle-images/DoroDoroDororong.png"
+              data-puzzle-key="doro-doro-dororong"
+              data-puzzle-name="DoroDoroDororong"
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with DoroDoroDororong"
+            >
+              <img
+                src="puzzle-images/DoroDoroDororong.png"
+                alt=""
+                width="3000"
+                height="4000"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>DoroDoroDororong</span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-image="puzzle-images/Jjiho.png"
+              data-puzzle-key="jjiho"
+              data-puzzle-name="Jjiho"
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with Jjiho"
+            >
+              <img
+                src="puzzle-images/Jjiho.png"
+                alt=""
+                width="1254"
+                height="1254"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>Jjiho</span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="puzzle-choice"
+              type="button"
+              data-puzzle-image="puzzle-images/Twiing.png"
+              data-puzzle-key="twiing"
+              data-puzzle-name="Twiing"
+              aria-controls="puzzle-game"
+              aria-label="Start sliding puzzle with Twiing"
+            >
+              <img
+                src="puzzle-images/Twiing.png"
+                alt=""
+                width="1448"
+                height="1086"
+                loading="lazy"
+                decoding="async"
+              >
+              <span>Twiing</span>
+            </button>
+          </li>
+        </ul>
 
-    <section id="research">
-      <h2>Research interests</h2>
+        <div id="puzzle-game" class="puzzle-game" data-puzzle-game hidden>
+          <div class="puzzle-game-heading">
+            <div>
+              <p class="puzzle-kicker">Now playing</p>
+              <h3 data-puzzle-name>Speaki</h3>
+              <p class="puzzle-test-badge" data-puzzle-test-badge hidden>
+                Test mode · scores are not submitted
+              </p>
+            </div>
+            <button class="text-button" type="button" data-puzzle-change>
+              Choose another image
+            </button>
+          </div>
 
-      <ul>
-        <li>Classical simulation of quantum systems</li>
-        <li>Fermionic quantum computation</li>
-        <li>Quantum learning and verification</li>
-        <li>Sampling complexity and anticoncentration</li>
-        <li>Noisy quantum computation</li>
-      </ul>
-    </section>
+          <div class="puzzle-play-area">
+            <div
+              class="puzzle-board"
+              role="group"
+              tabindex="0"
+              aria-label="6 by 6 sliding puzzle. Use arrow keys to move the empty space."
+              data-puzzle-board
+            ></div>
 
-    <section id="publications">
-      <h2>Publications and preprints</h2>
+            <figure class="puzzle-reference">
+              <img
+                src="puzzle-images/Speaki.png"
+                alt="Completed Speaki puzzle"
+                width="1312"
+                height="1199"
+                decoding="async"
+                data-puzzle-reference
+              >
+              <figcaption>Answer</figcaption>
+            </figure>
+          </div>
 
-      <!--
-      논문이 생기면 아래 블록을 복사해서 사용하세요.
+          <div class="puzzle-controls">
+            <p class="puzzle-stats">
+              <span><strong data-puzzle-moves>0</strong> moves</span>
+            </p>
+            <div class="puzzle-actions">
+              <button class="button button-secondary" type="button" data-puzzle-reset>
+                Reset
+              </button>
+              <button class="button" type="button" data-puzzle-shuffle>
+                Shuffle
+              </button>
+            </div>
+          </div>
 
-      <article class="item">
-        <h3>Title of the paper</h3>
+          <section
+            class="puzzle-completion"
+            data-puzzle-completion
+            aria-labelledby="puzzle-completion-title"
+            hidden
+          >
+            <p class="puzzle-completion-kicker">Completed</p>
+            <h4 id="puzzle-completion-title" tabindex="-1">Congratulations!</h4>
+            <p data-puzzle-completion-summary></p>
+            <dl class="puzzle-record" aria-label="Completion record">
+              <div>
+                <dt>Moves</dt>
+                <dd data-puzzle-record-moves>0</dd>
+              </div>
+            </dl>
+            <form class="puzzle-score-form" data-puzzle-score-form>
+              <label for="puzzle-player-name">Public leaderboard name</label>
+              <input
+                id="puzzle-player-name"
+                name="player_name"
+                type="text"
+                maxlength="40"
+                autocomplete="nickname"
+                aria-describedby="puzzle-name-help puzzle-score-consent puzzle-email-consent"
+                data-puzzle-player-name
+                required
+              >
+              <p id="puzzle-name-help" class="puzzle-field-note">
+                Enter 1–40 characters. Do not enter an email address.
+              </p>
+              <p id="puzzle-score-consent" class="puzzle-score-consent" data-puzzle-score-consent>
+                Add this record to the public leaderboard? Your chosen name and moves will be public.
+              </p>
+              <label class="puzzle-email-consent" id="puzzle-email-consent">
+                <input type="checkbox" data-puzzle-email-consent required>
+                <span>I agree that my Google email will be public and clicking my name will open an email message to me.</span>
+              </label>
+              <button class="button puzzle-score-submit" type="submit" data-puzzle-submit>
+                Add to leaderboard
+              </button>
+            </form>
+            <div class="puzzle-completion-actions">
+              <button class="button button-secondary" type="button" data-puzzle-play-again>
+                Play again
+              </button>
+            </div>
+            <p class="puzzle-score-status" role="status" aria-live="polite" tabindex="-1" data-puzzle-score-status></p>
+          </section>
 
-        <p class="authors">
-          Jiwon Heo, Coauthor One, and Coauthor Two
-        </p>
+          <p
+            class="puzzle-status visually-hidden"
+            role="status"
+            aria-live="polite"
+            data-puzzle-status
+          ></p>
 
-        <p class="venue">
-          arXiv preprint, 2026
-        </p>
+        </div>
 
-        <p class="description">
-          A one-sentence explanation of the main result.
-        </p>
-
-        <p class="paper-links">
-          <a href="ARXIV_URL">arXiv</a>
-          ·
-          <a href="PDF_URL">PDF</a>
-          ·
-          <a href="CODE_URL">Code</a>
-          ·
-          <a href="SLIDES_URL">Slides</a>
-        </p>
-      </article>
-      -->
-
-      <p>
-        An up-to-date publication list is available on my
-        <a
-          href="https://scholar.google.com/citations?user=rID1I50AAAAJ&hl=ko"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Google Scholar profile
-        </a>.
-      </p>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-
-      <p>
-        Email:
-        <a href="mailto:4865sj@gmail.com">
-          4865sj@gmail.com
-        </a>
-      </p>
-
-      <p>
-        Korea Advanced Institute of Science and Technology,
-        Daejeon, Republic of Korea
-      </p>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      © 2026 Jiwon Heo
+  <footer class="site-footer">
+    <div class="footer-content container">
+      <p>&copy; Jiwon Heo</p>
+      <p>Last update: 2026.08.13</p>
     </div>
   </footer>
+
+  <script src="puzzle.js?v=20260813-9" defer></script>
+  <script src="board.js?v=20260813-7" defer></script>
 </body>
 </html>

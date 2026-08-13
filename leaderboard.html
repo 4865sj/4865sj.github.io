@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src https://atdqvkkpnupphxrdoawq.supabase.co; base-uri 'none'; form-action 'self'; object-src 'none'; frame-src 'none'"
+  >
+  <meta name="description" content="Sliding puzzle hall of fame and rankings by image.">
+  <meta name="theme-color" content="#173a5e">
+  <title>Sliding puzzle leaderboard | Jiwon Heo</title>
+  <link rel="stylesheet" href="style.css?v=20260813-8">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="title-block">
+    <div class="title-panel">
+      <div class="container">
+        <h1><a class="site-title-link" href="index.html">Jiwon Heo</a></h1>
+        <nav aria-label="Contact and academic profiles">
+          <ul class="profile-links">
+            <li><a href="mailto:4865sj@gmail.com">Email</a></li>
+            <li><a href="https://github.com/4865sj" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="https://kr.linkedin.com/in/4865sj" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <nav class="category-nav" aria-label="Pages">
+      <div class="container">
+        <ul class="category-links">
+          <li><a href="about.html">About me</a></li>
+          <li><a href="publications.html">Publication lists</a></li>
+          <li><a href="presentations.html">Presentation</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="board.html">Board</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <aside class="message-card" aria-labelledby="message-card-title">
+    <p class="message-label">Board</p>
+    <form class="message-form" action="board.html" method="post" data-message-form="top-level">
+      <label id="message-card-title" class="message-title" for="leaderboard-message">Leave a message</label>
+      <textarea
+        id="leaderboard-message"
+        name="message"
+        rows="4"
+        maxlength="2000"
+        aria-describedby="leaderboard-message-note leaderboard-message-count"
+        data-message-body
+        required
+      ></textarea>
+      <div class="message-form-meta">
+        <span id="leaderboard-message-note" data-session-note>Google sign-in required.</span>
+        <span id="leaderboard-message-count" data-message-count>0 / 2000</span>
+      </div>
+      <button class="button message-submit" type="submit" data-message-submit data-signed-in-label="Post to Board">Sign in &amp; post</button>
+      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
+  <main id="main-content">
+    <section class="leaderboard-page" aria-labelledby="leaderboard-page-title">
+      <div class="leaderboard-page-content container">
+        <header class="leaderboard-page-header">
+          <p class="puzzle-kicker">Sliding puzzle</p>
+          <h2 id="leaderboard-page-title">Leaderboard</h2>
+          <p>Fewest moves wins. A player appears only once in the Hall of Fame, with their best result across every image.</p>
+          <p><a href="index.html#puzzle-title">Back to the puzzle</a></p>
+        </header>
+
+        <section class="hall-of-fame" aria-labelledby="hall-of-fame-title" data-hall-of-fame aria-busy="true">
+          <div class="leaderboard-section-heading">
+            <div>
+              <p class="puzzle-kicker">All images</p>
+              <h3 id="hall-of-fame-title">Hall of Fame</h3>
+            </div>
+            <span>All-time · Top 10 players</span>
+          </div>
+          <p class="leaderboard-privacy-note">Player names link to Google email addresses that those players chose to publish.</p>
+          <p class="leaderboard-page-status" role="status" aria-live="polite" data-hall-status>Loading Hall of Fame…</p>
+          <div class="leaderboard-page-table-wrap">
+            <table class="leaderboard-page-table leaderboard-hall-table" data-hall-table hidden>
+              <caption class="visually-hidden">Top ten sliding puzzle players across every image</caption>
+              <thead><tr><th scope="col">Rank</th><th scope="col">Name</th><th scope="col">Image</th><th scope="col">Moves</th><th scope="col">Registered (KST)</th></tr></thead>
+              <tbody data-hall-body></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="image-rankings" aria-labelledby="image-rankings-title">
+          <header class="image-rankings-heading">
+            <p class="puzzle-kicker">Every challenge</p>
+            <div class="image-rankings-title-row">
+              <h3 id="image-rankings-title">Rankings by image</h3>
+              <p class="image-rankings-period" data-image-ranking-period></p>
+            </div>
+            <p class="image-rankings-retention">Records outside the Hall of Fame are kept for one year.</p>
+          </header>
+          <div class="image-ranking-list" data-image-ranking-list aria-busy="true"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content container">
+      <p>&copy; Jiwon Heo</p>
+      <p>Last update: 2026.08.12</p>
+    </div>
+  </footer>
+
+  <script src="leaderboard.js" defer></script>
+  <script src="board.js?v=20260813-7" defer></script>
+</body>
+</html>
