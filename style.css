@@ -20,6 +20,25 @@
   --section-spacing: clamp(3.75rem, 8vw, 6rem);
 }
 
+/* Keep the persistent board companion visually attached to the page while a
+   same-origin category navigation replaces the document. Browsers without
+   cross-document View Transitions simply ignore this progressive enhancement. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(site-seal-companion),
+::view-transition-old(site-seal-companion),
+::view-transition-new(site-seal-companion) {
+  animation-duration: 120ms;
+  animation-timing-function: ease-out;
+}
+
 *,
 *::before,
 *::after {
@@ -1754,6 +1773,15 @@ a.board-author {
   background: var(--color-surface);
 }
 
+.board-edit-image-field {
+  margin-top: 0.85rem;
+}
+
+.board-edit-image-action {
+  display: inline-block;
+  margin-top: 0.55rem;
+}
+
 .board-attachment {
   margin: 0.85rem 0 1rem;
 }
@@ -1837,6 +1865,7 @@ a.board-author {
   cursor: pointer;
   line-height: 1;
   transition: none;
+  view-transition-name: site-seal-companion;
 }
 
 .card-seal--crawling {
@@ -1966,6 +1995,7 @@ a.board-author {
 
 .card-seal--sleeping .card-seal__art--sleeping {
   animation: seal-sleepy-belly 2.4s ease-in-out infinite;
+  animation-delay: var(--seal-sleep-delay, 0ms);
 }
 
 .card-seal--startled .card-seal__zzz,
@@ -2004,10 +2034,12 @@ a.board-author {
 
 .card-seal--crawling .card-seal__sprite {
   animation: seal-crawl 620ms ease-in-out infinite;
+  animation-delay: var(--seal-crawl-cycle-delay, 0ms);
 }
 
 .card-seal--crawling .card-seal__art--awake {
   animation: seal-belly-drag 620ms ease-in-out infinite;
+  animation-delay: var(--seal-crawl-cycle-delay, 0ms);
 }
 
 .card-seal--settling .card-seal__sprite {
@@ -2308,6 +2340,12 @@ a.board-author {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(site-seal-companion),
+  ::view-transition-old(site-seal-companion),
+  ::view-transition-new(site-seal-companion) {
+    animation: none;
+  }
+
   .title-crepe,
   .title-crepe * {
     transition: none !important;

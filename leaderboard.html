@@ -10,7 +10,12 @@
   <meta name="description" content="Sliding puzzle hall of fame and rankings by image.">
   <meta name="theme-color" content="#173a5e">
   <title>Sliding puzzle leaderboard | Jiwon Heo</title>
-  <link rel="stylesheet" href="style.css?v=20260813-8">
+  <link rel="stylesheet" href="style.css?v=20260813-9">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/sleeping-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/awake-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="script" href="board.js?v=20260813-8">
+  <link rel="preload" as="script" href="seal-bootstrap.js?v=20260813-1">
+  <link rel="expect" href="#message-card-title" blocking="render">
 </head>
 
 <body>
@@ -41,28 +46,6 @@
       </div>
     </nav>
   </header>
-
-  <aside class="message-card" aria-labelledby="message-card-title">
-    <p class="message-label">Board</p>
-    <form class="message-form" action="board.html" method="post" data-message-form="top-level">
-      <label id="message-card-title" class="message-title" for="leaderboard-message">Leave a message</label>
-      <textarea
-        id="leaderboard-message"
-        name="message"
-        rows="4"
-        maxlength="2000"
-        aria-describedby="leaderboard-message-note leaderboard-message-count"
-        data-message-body
-        required
-      ></textarea>
-      <div class="message-form-meta">
-        <span id="leaderboard-message-note" data-session-note>Google sign-in required.</span>
-        <span id="leaderboard-message-count" data-message-count>0 / 2000</span>
-      </div>
-      <button class="button message-submit" type="submit" data-message-submit data-signed-in-label="Post to Board">Sign in &amp; post</button>
-      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
-    </form>
-  </aside>
 
   <main id="main-content">
     <section class="leaderboard-page" aria-labelledby="leaderboard-page-title">
@@ -108,14 +91,91 @@
     </section>
   </main>
 
+  <aside class="message-card seal-enhanced" aria-labelledby="message-card-title">
+    <button
+      class="card-seal card-seal--sleeping card-seal--slot-2"
+      type="button"
+      aria-label="Wake the sleeping white seal"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <span class="card-seal__zzz" aria-hidden="true">Zzz&hellip;</span>
+      <span class="card-seal__alert" aria-hidden="true">!</span>
+      <span class="card-seal__facing" aria-hidden="true">
+        <span class="card-seal__sprite">
+          <img
+            class="card-seal__art card-seal__art--sleeping"
+            src="assets/seal-model-v2/sleeping-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-tail"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-body"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+        </span>
+      </span>
+    </button>
+    <script src="seal-bootstrap.js?v=20260813-1"></script>
+    <div class="message-card-content">
+    <p class="message-label">Board</p>
+    <form class="message-form" action="board.html" method="post" data-message-form="top-level">
+      <label id="message-card-title" class="message-title" for="leaderboard-message">Leave a message</label>
+      <textarea
+        id="leaderboard-message"
+        name="message"
+        rows="4"
+        maxlength="2000"
+        aria-describedby="leaderboard-message-note leaderboard-message-count"
+        data-message-body
+        required
+      ></textarea>
+      <div class="message-form-meta">
+        <span id="leaderboard-message-note" data-session-note>Google sign-in required.</span>
+        <span id="leaderboard-message-count" data-message-count>0 / 2000</span>
+      </div>
+      <button class="button message-submit" type="submit" data-message-submit data-signed-in-label="Post to Board">Sign in &amp; post</button>
+      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+    </form>
+    </div>
+    <span
+      class="card-seal-status visually-hidden"
+      role="status"
+      aria-live="polite"
+    ></span>
+  </aside>
+
   <footer class="site-footer">
     <div class="footer-content container">
       <p>&copy; Jiwon Heo</p>
-      <p>Last update: 2026.08.12</p>
+      <p>Last update: 2026.08.13</p>
     </div>
   </footer>
 
   <script src="leaderboard.js" defer></script>
-  <script src="board.js?v=20260813-7" defer></script>
+  <script src="board.js?v=20260813-8" defer></script>
 </body>
 </html>

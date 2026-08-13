@@ -345,9 +345,9 @@ alter table public.board_image_uploads enable row level security;
 revoke all on table public.board_image_uploads
     from public, anon, authenticated;
 
--- Durable cleanup queue for attachments unlinked by message deletion. The
--- browser may lose the delete RPC response, so the path must remain recoverable
--- server-side until the Storage API confirms removal.
+-- Durable cleanup queue for attachments unlinked by message deletion or edit.
+-- The browser may lose the mutation RPC response, so the path must remain
+-- recoverable server-side until the Storage API confirms removal.
 create table if not exists public.board_image_cleanup_queue (
     object_path text primary key,
     requested_by uuid not null references auth.users (id) on delete cascade,
@@ -371,11 +371,32 @@ stable
 security definer
 set search_path = ''
 as $function$
-    select cleanup.object_path
-    from public.board_image_cleanup_queue as cleanup
-    where cleanup.requested_by = auth.uid()
-       or public.is_board_admin()
-    order by cleanup.requested_at
+    with cleanup_candidates as (
+        select
+            cleanup.object_path,
+            cleanup.requested_at as cleanup_at
+        from public.board_image_cleanup_queue as cleanup
+        where cleanup.requested_by = auth.uid()
+           or public.is_board_admin()
+
+        union
+
+        -- Recover bytes left behind if a browser closes after upload but
+        -- before a create/edit RPC can consume the reservation.
+        select
+            upload.object_path,
+            upload.created_at as cleanup_at
+        from public.board_image_uploads as upload
+        where (
+                upload.author_id = auth.uid()
+                or public.is_board_admin()
+              )
+          and upload.consumed_at is null
+          and upload.created_at <= now() - interval '20 minutes'
+    )
+    select candidate.object_path
+    from cleanup_candidates as candidate
+    order by candidate.cleanup_at
     limit 100;
 $function$;
 
@@ -393,6 +414,7 @@ set search_path = ''
 as $function$
 declare
     v_deleted boolean;
+    v_reservation_deleted boolean;
 begin
     delete from public.board_image_cleanup_queue as cleanup
     where cleanup.object_path = p_image_path
@@ -402,9 +424,34 @@ begin
             from storage.objects as stored_object
             where stored_object.bucket_id = 'board-images'
               and stored_object.name = p_image_path
-      );
+    );
     v_deleted := found;
-    return v_deleted;
+
+    -- Once an expired, unconsumed object's bytes are gone, remove its stale
+    -- reservation too. The row remains present until this point because the
+    -- Storage DELETE policy uses it to prove ownership.
+    delete from public.board_image_uploads as upload
+    where upload.object_path = p_image_path
+      and (
+            upload.author_id = auth.uid()
+            or public.is_board_admin()
+      )
+      and upload.consumed_at is null
+      and upload.created_at <= now() - interval '20 minutes'
+      and not exists (
+            select 1
+            from storage.objects as stored_object
+            where stored_object.bucket_id = 'board-images'
+              and stored_object.name = p_image_path
+      )
+      and not exists (
+            select 1
+            from public.board_messages as message
+            where message.image_path = p_image_path
+      );
+    v_reservation_deleted := found;
+
+    return v_deleted or v_reservation_deleted;
 end;
 $function$;
 
@@ -1080,7 +1127,193 @@ grant execute on function public.create_board_message(text, uuid, uuid)
 
 -- Only the author can edit a live message. Authorization is derived from the
 -- access token inside the database; author ids never need to be exposed to the
--- browser. Attachments, identity, threading, and creation time are immutable.
+-- browser. A top-level attachment may be kept, removed, or replaced with a new
+-- owner-bound upload reservation. The old immutable object is queued for
+-- durable cleanup only after its database reference has been removed.
+drop function if exists public.update_board_message(uuid, text, uuid, text);
+create function public.update_board_message(
+    p_message_id uuid,
+    p_body text,
+    p_request_id uuid,
+    p_image_path text
+)
+returns table (
+    id uuid,
+    parent_id uuid,
+    author_name text,
+    author_email text,
+    body text,
+    image_path text,
+    created_at timestamptz,
+    edited_at timestamptz,
+    deleted_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = ''
+as $function$
+declare
+    v_user_id uuid := auth.uid();
+    v_body text;
+    v_message public.board_messages%rowtype;
+    v_image_changed boolean;
+begin
+    if v_user_id is null then
+        raise exception using
+            errcode = '42501',
+            message = 'Google sign-in is required to edit a message.';
+    end if;
+
+    if p_message_id is null then
+        raise exception using
+            errcode = '22023',
+            message = 'A message id is required.';
+    end if;
+
+    v_body := regexp_replace(
+        p_body,
+        '^[[:space:]]+|[[:space:]]+$',
+        '',
+        'g'
+    );
+
+    if p_body is null
+       or char_length(v_body) < 1
+       or char_length(v_body) > 2000
+       or octet_length(v_body) > 8000 then
+        raise exception using
+            errcode = '22023',
+            message = 'A message must contain between 1 and 2000 characters.';
+    end if;
+
+    select message.*
+    into v_message
+    from public.board_messages as message
+    where message.id = p_message_id
+    for update;
+
+    if not found then
+        raise exception using
+            errcode = 'P0002',
+            message = 'The message no longer exists.';
+    end if;
+
+    if v_message.author_id <> v_user_id then
+        raise exception using
+            errcode = '42501',
+            message = 'Only the author can edit this message.';
+    end if;
+
+    if v_message.status <> 'published'
+       or v_message.deleted_at is not null then
+        raise exception using
+            errcode = '55000',
+            message = 'A deleted or hidden message cannot be edited.';
+    end if;
+
+    if p_image_path is not null and v_message.parent_id is not null then
+        raise exception using
+            errcode = '22023',
+            message = 'Images can only be attached to top-level messages.';
+    end if;
+
+    v_image_changed := v_message.image_path is distinct from p_image_path;
+
+    if v_image_changed and p_image_path is not null then
+        if p_request_id is null then
+            raise exception using
+                errcode = '22023',
+                message = 'A request id is required to replace an image.';
+        end if;
+
+        -- Match create_board_message: a forged path cannot attach another
+        -- account's object or bypass the bucket MIME and byte limits.
+        if not exists (
+            select 1
+            from public.board_image_uploads as upload
+            join storage.objects as object
+              on object.bucket_id = 'board-images'
+             and object.name = upload.object_path
+            where upload.author_id = v_user_id
+              and upload.request_id = p_request_id
+              and upload.object_path = p_image_path
+              and upload.consumed_at is null
+              and upload.created_at > now() - interval '20 minutes'
+              and object.owner_id = v_user_id::text
+              and coalesce((object.metadata ->> 'size')::bigint, 0)
+                    between 1 and 5242880
+              and lower(coalesce(object.metadata ->> 'mimetype', ''))
+                    = upload.mime_type
+        ) then
+            raise exception using
+                errcode = '22023',
+                message = 'The uploaded image is missing or invalid.';
+        end if;
+    end if;
+
+    update public.board_messages as message
+    set body = v_body,
+        image_path = p_image_path,
+        edited_at = pg_catalog.clock_timestamp()
+    where message.id = p_message_id;
+
+    if v_image_changed and p_image_path is not null then
+        update public.board_image_uploads as upload
+        set consumed_at = now()
+        where upload.author_id = v_user_id
+          and upload.request_id = p_request_id
+          and upload.object_path = p_image_path
+          and upload.consumed_at is null;
+
+        if not found then
+            raise exception using
+                errcode = 'P0001',
+                message = 'The image upload reservation has already been used.';
+        end if;
+    end if;
+
+    if v_image_changed and v_message.image_path is not null then
+        insert into public.board_image_cleanup_queue (
+            object_path,
+            requested_by,
+            requested_at
+        ) values (
+            v_message.image_path,
+            v_user_id,
+            pg_catalog.clock_timestamp()
+        )
+        on conflict (object_path) do update
+        set requested_by = excluded.requested_by,
+            requested_at = excluded.requested_at;
+    end if;
+
+    return query
+    select
+        message.id,
+        message.parent_id,
+        message.author_name,
+        message.author_email,
+        message.body,
+        message.image_path,
+        message.created_at,
+        message.edited_at,
+        message.deleted_at
+    from public.board_messages as message
+    where message.id = p_message_id;
+end;
+$function$;
+
+comment on function public.update_board_message(uuid, text, uuid, text) is
+    'Edits an owned live message and atomically keeps, removes, or replaces its top-level image.';
+
+revoke all on function public.update_board_message(uuid, text, uuid, text)
+    from public, anon, authenticated;
+grant execute on function public.update_board_message(uuid, text, uuid, text)
+    to authenticated;
+
+-- Keep the original text-only RPC for an older cached browser bundle. Its
+-- implementation never touches image_path, so a body edit cannot detach an
+-- existing attachment during the backend-first deployment window.
 drop function if exists public.update_board_message(uuid, text);
 create function public.update_board_message(
     p_message_id uuid,
@@ -1181,7 +1414,7 @@ end;
 $function$;
 
 comment on function public.update_board_message(uuid, text) is
-    'Edits the current author''s live board message and records edited_at.';
+    'Compatibility RPC that edits only the current author''s message body.';
 
 revoke all on function public.update_board_message(uuid, text)
     from public, anon, authenticated;
@@ -2718,7 +2951,7 @@ begin
             null,
             v_submission.id
         )
-        on conflict (user_id, image_key, board_version) do update
+        on conflict on constraint puzzle_best_scores_pkey do update
         set player_name = excluded.player_name,
             google_email = excluded.google_email,
             email_public = excluded.email_public,
