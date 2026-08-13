@@ -15,7 +15,12 @@
 
   <title>About me | Jiwon Heo</title>
 
-  <link rel="stylesheet" href="style.css?v=20260813-8">
+  <link rel="stylesheet" href="style.css?v=20260813-9">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/sleeping-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/awake-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="script" href="board.js?v=20260813-8">
+  <link rel="preload" as="script" href="seal-bootstrap.js?v=20260813-1">
+  <link rel="expect" href="#message-card-title" blocking="render">
 </head>
 
 <body>
@@ -63,7 +68,71 @@
     </nav>
   </header>
 
-  <aside class="message-card" aria-labelledby="message-card-title">
+  <main id="main-content">
+    <section class="content-section" aria-labelledby="about-title">
+      <div class="section-layout container">
+        <header class="section-heading">
+          <h2 id="about-title">About me</h2>
+        </header>
+
+        <div class="section-content about-content">
+          <p>Hello, I study quantum information theory.</p>
+          <p class="about-links"><a href="cv.pdf">CV (PDF)</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="message-card seal-enhanced" aria-labelledby="message-card-title">
+    <button
+      class="card-seal card-seal--sleeping card-seal--slot-2"
+      type="button"
+      aria-label="Wake the sleeping white seal"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <span class="card-seal__zzz" aria-hidden="true">Zzz&hellip;</span>
+      <span class="card-seal__alert" aria-hidden="true">!</span>
+      <span class="card-seal__facing" aria-hidden="true">
+        <span class="card-seal__sprite">
+          <img
+            class="card-seal__art card-seal__art--sleeping"
+            src="assets/seal-model-v2/sleeping-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-tail"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-body"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+        </span>
+      </span>
+    </button>
+    <script src="seal-bootstrap.js?v=20260813-1"></script>
+    <div class="message-card-content">
     <p class="message-label">Board</p>
     <form
       class="message-form"
@@ -95,30 +164,21 @@
       >Sign in &amp; post</button>
       <p class="form-status" data-message-status role="status" aria-live="polite"></p>
     </form>
+    </div>
+    <span
+      class="card-seal-status visually-hidden"
+      role="status"
+      aria-live="polite"
+    ></span>
   </aside>
-
-  <main id="main-content">
-    <section class="content-section" aria-labelledby="about-title">
-      <div class="section-layout container">
-        <header class="section-heading">
-          <h2 id="about-title">About me</h2>
-        </header>
-
-        <div class="section-content about-content">
-          <p>Hello, I study quantum information theory.</p>
-          <p class="about-links"><a href="cv.pdf">CV (PDF)</a></p>
-        </div>
-      </div>
-    </section>
-  </main>
 
   <footer class="site-footer">
     <div class="footer-content container">
       <p>&copy; Jiwon Heo</p>
-      <p>Last update: 2026.08.12</p>
+      <p>Last update: 2026.08.13</p>
     </div>
   </footer>
 
-  <script src="board.js?v=20260813-7" defer></script>
+  <script src="board.js?v=20260813-8" defer></script>
 </body>
 </html>

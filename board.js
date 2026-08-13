@@ -625,19 +625,14 @@
       return;
     }
 
-    card.dataset.sealReady = "true";
     card.classList.add("seal-enhanced");
-
-    const content = document.createElement("div");
-    content.className = "message-card-content";
-    while (card.firstChild) {
-      content.append(card.firstChild);
-    }
 
     const slotCount = 5;
     const startledDuration = 950;
     const confusedDuration = 1800;
     const zzzDuration = 2300;
+    const sleepyDuration = 2400;
+    const crawlCycleDuration = 620;
     const crawlDurationPerSlot = 2000;
     const maximumCrawlDuration = (slotCount - 1) * crawlDurationPerSlot;
     const legacyCrawlDuration = 2000;
@@ -706,65 +701,101 @@
         : storedSealState.toSlot
       : storedSealState?.slot ?? 2;
 
-    const button = document.createElement("button");
+    const directChild = (selector) => Array.from(card.children).find(
+      (child) => child.matches(selector),
+    ) || null;
+
+    let button = directChild(".card-seal");
+    let content = directChild(".message-card-content");
+    let status = directChild(".card-seal-status");
+
+    if (!content) {
+      content = document.createElement("div");
+      content.className = "message-card-content";
+      Array.from(card.childNodes).forEach((child) => {
+        if (child !== button && child !== status) {
+          content.append(child);
+        }
+      });
+    }
+
+    if (!button) {
+      button = document.createElement("button");
+    }
+    button.style.removeProperty("left");
+    button.removeAttribute("data-seal-bootstrap-crawl");
     button.className = `card-seal card-seal--sleeping card-seal--slot-${initialSlot}`;
     button.type = "button";
     button.setAttribute("aria-label", "Wake the sleeping white seal");
+    button.removeAttribute("aria-hidden");
+    button.removeAttribute("tabindex");
 
-    const zzz = document.createElement("span");
+    const zzz = button.querySelector(".card-seal__zzz") || document.createElement("span");
     zzz.className = "card-seal__zzz";
     zzz.textContent = "Zzz…";
     zzz.setAttribute("aria-hidden", "true");
 
-    const alert = document.createElement("span");
+    const alert = button.querySelector(".card-seal__alert") || document.createElement("span");
     alert.className = "card-seal__alert";
     alert.textContent = "!";
     alert.setAttribute("aria-hidden", "true");
 
-    const facing = document.createElement("span");
+    const facing = button.querySelector(".card-seal__facing") || document.createElement("span");
     facing.className = "card-seal__facing";
     facing.setAttribute("aria-hidden", "true");
 
-    const sprite = document.createElement("span");
+    const sprite = facing.querySelector(".card-seal__sprite") || document.createElement("span");
     sprite.className = "card-seal__sprite";
 
-    const sleepingArt = document.createElement("img");
+    const sleepingArt = sprite.querySelector(".card-seal__art--sleeping") ||
+      document.createElement("img");
     sleepingArt.className = "card-seal__art card-seal__art--sleeping";
     sleepingArt.src = "assets/seal-model-v2/sleeping-side.png?v=20260813-3";
     sleepingArt.alt = "";
     sleepingArt.width = 724;
     sleepingArt.height = 543;
-    sleepingArt.decoding = "async";
+    sleepingArt.decoding = "sync";
+    sleepingArt.fetchPriority = "high";
+    sleepingArt.loading = "eager";
     sleepingArt.draggable = false;
 
-    const awakeArt = document.createElement("img");
+    const awakeArt = sprite.querySelector(".card-seal__art--awake-body") ||
+      document.createElement("img");
     awakeArt.className = "card-seal__art card-seal__art--awake card-seal__art--awake-body";
     awakeArt.src = "assets/seal-model-v2/awake-side.png?v=20260813-3";
     awakeArt.alt = "";
     awakeArt.width = 724;
     awakeArt.height = 543;
-    awakeArt.decoding = "async";
+    awakeArt.decoding = "sync";
+    awakeArt.fetchPriority = "high";
+    awakeArt.loading = "eager";
     awakeArt.draggable = false;
 
-    const awakeTailArt = document.createElement("img");
+    const awakeTailArt = sprite.querySelector(".card-seal__art--awake-tail") ||
+      document.createElement("img");
     awakeTailArt.className = "card-seal__art card-seal__art--awake card-seal__art--awake-tail";
-    awakeTailArt.src = awakeArt.src;
+    awakeTailArt.src = "assets/seal-model-v2/awake-side.png?v=20260813-3";
     awakeTailArt.alt = "";
     awakeTailArt.width = 724;
     awakeTailArt.height = 543;
-    awakeTailArt.decoding = "async";
+    awakeTailArt.decoding = "sync";
+    awakeTailArt.fetchPriority = "high";
+    awakeTailArt.loading = "eager";
     awakeTailArt.draggable = false;
 
-    sprite.append(sleepingArt, awakeTailArt, awakeArt);
-    facing.append(sprite);
-    button.append(zzz, alert, facing);
+    sprite.replaceChildren(sleepingArt, awakeTailArt, awakeArt);
+    facing.replaceChildren(sprite);
+    button.replaceChildren(zzz, alert, facing);
 
-    const status = document.createElement("span");
-    status.className = "visually-hidden";
+    if (!status) {
+      status = document.createElement("span");
+    }
+    status.className = "card-seal-status visually-hidden";
     status.setAttribute("role", "status");
     status.setAttribute("aria-live", "polite");
 
     card.append(button, content, status);
+    card.dataset.sealReady = "true";
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const timers = new Set();
@@ -814,9 +845,13 @@
         writeZzzEpoch(startedAt);
       }
       const phase = ((Date.now() - startedAt) % zzzDuration + zzzDuration) % zzzDuration;
+      const sleepyPhase = (
+        (Date.now() - startedAt) % sleepyDuration + sleepyDuration
+      ) % sleepyDuration;
       zzz.style.animation = "none";
       void zzz.offsetWidth;
       zzz.style.setProperty("--seal-zzz-delay", `${-phase}ms`);
+      button.style.setProperty("--seal-sleep-delay", `${-sleepyPhase}ms`);
       zzz.style.removeProperty("animation");
     };
 
@@ -868,6 +903,9 @@
         "card-seal--settling",
       );
       button.style.removeProperty("--seal-phase-delay");
+      if (state !== "crawling") {
+        button.style.removeProperty("--seal-crawl-cycle-delay");
+      }
       void button.offsetWidth;
       button.classList.add(`card-seal--${state}`);
     };
@@ -1070,6 +1108,16 @@
         button.style.removeProperty("--seal-crawl-duration");
         button.classList.remove(...slotClasses);
         button.classList.add(`card-seal--slot-${crawlFromSlot}`);
+        const crawlCycleStartedAt = isRestoredCrawl && Number.isFinite(snapshot.startedAt)
+          ? snapshot.startedAt
+          : Date.now();
+        const crawlCyclePhase = (
+          (Date.now() - crawlCycleStartedAt) % crawlCycleDuration + crawlCycleDuration
+        ) % crawlCycleDuration;
+        button.style.setProperty(
+          "--seal-crawl-cycle-delay",
+          `${-crawlCyclePhase}ms`,
+        );
         void button.offsetWidth;
         const fromLeft = button.getBoundingClientRect().left;
         if (canAnimateCrawl && crawlDelay > 0) {
@@ -2708,7 +2756,14 @@
     return message;
   }
 
-  async function callUpdateMessage(messageId, body, session, retried = false) {
+  async function callUpdateMessage(
+    messageId,
+    body,
+    requestId,
+    imagePath,
+    session,
+    retried = false,
+  ) {
     let response;
     try {
       response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/update_board_message`, {
@@ -2718,27 +2773,58 @@
           Authorization: `Bearer ${session.accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ p_message_id: messageId, p_body: body }),
+        body: JSON.stringify({
+          p_message_id: messageId,
+          p_body: body,
+          p_request_id: requestId,
+          p_image_path: imagePath,
+        }),
       });
     } catch {
-      throw new Error("The edit could not be saved. Please try again.");
+      throw messageRequestError(
+        "The edit may have been received, but the response was interrupted. Press Save edit again.",
+        true,
+      );
     }
-    const payload = await parseResponse(response);
+    let payload;
+    try {
+      payload = await parseResponse(response);
+    } catch {
+      throw messageRequestError(
+        response.ok
+          ? "The edit may have succeeded, but its response was incomplete. Press Save edit again."
+          : "The board returned an unreadable edit error. Please try again.",
+        response.ok || response.status === 408 || response.status >= 500,
+      );
+    }
     if (response.status === 401 && !retried) {
       const refreshed = await getValidSession(true);
       if (refreshed) {
-        return callUpdateMessage(messageId, body, refreshed, true);
+        return callUpdateMessage(
+          messageId,
+          body,
+          requestId,
+          imagePath,
+          refreshed,
+          true,
+        );
       }
     }
     if (!response.ok) {
       if (response.status === 401) {
         clearSession();
       }
-      throw new Error(responseMessage(response, payload, "The edit could not be saved."));
+      throw messageRequestError(
+        responseMessage(response, payload, "The edit could not be saved."),
+        response.status === 408 || response.status >= 500,
+      );
     }
     const message = Array.isArray(payload) ? payload[0] : payload;
     if (!message || message.id !== messageId) {
-      throw new Error("The edit response was incomplete. Refresh the board to verify it.");
+      throw messageRequestError(
+        "The edit response was incomplete. Press Save edit again to verify it.",
+        true,
+      );
     }
     return message;
   }
@@ -3308,7 +3394,226 @@
     return form;
   }
 
-  function buildEditForm(message, bodyElement, editButton) {
+  function buildEditImageController(message, form) {
+    if (message.parent_id !== null) {
+      return null;
+    }
+
+    const initialImagePath = IMAGE_PATH_PATTERN.test(message.image_path || "")
+      ? message.image_path
+      : null;
+    const inputId = `edit-image-${message.id}`;
+    const noteId = `edit-image-note-${message.id}`;
+    const statusId = `edit-image-status-${message.id}`;
+    const field = makeElement("div", "image-upload-field board-edit-image-field");
+    const label = makeElement("label", "", initialImagePath ? "Replace image" : "Image (optional)");
+    label.htmlFor = inputId;
+    const note = makeElement(
+      "p",
+      "image-upload-note",
+      initialImagePath
+        ? "Choose a new JPEG, PNG, or WebP image, or remove the current image. Maximum 5 MB."
+        : "Choose a JPEG, PNG, or WebP image. Maximum 5 MB.",
+    );
+    note.id = noteId;
+    const input = document.createElement("input");
+    input.id = inputId;
+    input.name = "image";
+    input.type = "file";
+    input.accept = ".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp";
+    input.setAttribute("aria-describedby", `${noteId} ${statusId}`);
+
+    const preview = makeElement("div", "image-preview");
+    const previewImage = document.createElement("img");
+    previewImage.alt = "Image selected for this message";
+    previewImage.referrerPolicy = "no-referrer";
+    const previewDetails = document.createElement("div");
+    const summary = makeElement("p", "", "Current image");
+    previewDetails.append(summary);
+    preview.append(previewImage, previewDetails);
+
+    const toggle = makeElement("button", "text-button board-edit-image-action");
+    toggle.type = "button";
+    const imageStatus = makeElement("p", "form-status");
+    imageStatus.id = statusId;
+    imageStatus.setAttribute("role", "status");
+    imageStatus.setAttribute("aria-live", "polite");
+    field.append(label, note, input, preview, toggle, imageStatus);
+
+    let selectedFile = null;
+    let selectedDimensions = null;
+    let selectedPreviewUrl = "";
+    let removeExisting = false;
+    let selectionRevision = 0;
+    let selectionPromise = null;
+    let selectionError = "";
+    let locked = false;
+
+    const revokePreview = () => {
+      if (selectedPreviewUrl) {
+        URL.revokeObjectURL(selectedPreviewUrl);
+        selectedPreviewUrl = "";
+      }
+    };
+
+    const render = () => {
+      if (selectedFile && selectedPreviewUrl) {
+        previewImage.src = selectedPreviewUrl;
+        const dimensions = selectedDimensions
+          ? `${selectedDimensions.width} x ${selectedDimensions.height} - `
+          : "";
+        summary.textContent = `${selectedFile.name} - ${dimensions}${fileSizeLabel(selectedFile.size)}`;
+        preview.hidden = false;
+        toggle.hidden = false;
+        toggle.textContent = initialImagePath ? "Cancel replacement" : "Remove selected image";
+      } else if (initialImagePath && !removeExisting) {
+        previewImage.src = publicImageUrl(initialImagePath);
+        summary.textContent = "Current image";
+        preview.hidden = false;
+        toggle.hidden = false;
+        toggle.textContent = "Remove image";
+      } else {
+        previewImage.removeAttribute("src");
+        preview.hidden = true;
+        toggle.hidden = !initialImagePath;
+        toggle.textContent = "Keep current image";
+      }
+      input.disabled = locked || form.getAttribute("aria-busy") === "true";
+      toggle.disabled = locked || form.getAttribute("aria-busy") === "true";
+    };
+
+    const clearSelectedFile = () => {
+      selectionRevision += 1;
+      selectedFile = null;
+      selectedDimensions = null;
+      selectionError = "";
+      input.value = "";
+      revokePreview();
+    };
+
+    const reset = () => {
+      clearSelectedFile();
+      removeExisting = false;
+      locked = false;
+      setStatus(imageStatus, "");
+      render();
+    };
+
+    const selectFile = async (file) => {
+      const revision = ++selectionRevision;
+      selectionError = "";
+      if (!file) {
+        clearSelectedFile();
+        removeExisting = false;
+        setStatus(imageStatus, "");
+        render();
+        return;
+      }
+      if (!IMAGE_TYPES.has(file.type)) {
+        input.value = "";
+        selectionError = "Choose a JPEG, PNG, or WebP image.";
+        setStatus(imageStatus, selectionError, "error");
+        render();
+        return;
+      }
+      if (file.size < 1 || file.size > IMAGE_LIMIT) {
+        input.value = "";
+        selectionError = "Choose an image no larger than 5 MB.";
+        setStatus(imageStatus, selectionError, "error");
+        render();
+        return;
+      }
+
+      setStatus(imageStatus, "Checking image...");
+      input.disabled = true;
+      let dimensions;
+      try {
+        dimensions = await imageDimensions(file);
+      } catch {
+        if (revision === selectionRevision) {
+          input.value = "";
+          selectionError = "The selected file is not a readable image.";
+          setStatus(imageStatus, selectionError, "error");
+          render();
+        }
+        return;
+      }
+      if (revision !== selectionRevision) {
+        return;
+      }
+      if (
+        dimensions.width < 1 ||
+        dimensions.height < 1 ||
+        dimensions.width > IMAGE_SIDE_LIMIT ||
+        dimensions.height > IMAGE_SIDE_LIMIT ||
+        dimensions.width * dimensions.height > IMAGE_PIXEL_LIMIT
+      ) {
+        input.value = "";
+        selectionError = "Choose an image with fewer than 40 million pixels.";
+        setStatus(imageStatus, selectionError, "error");
+        render();
+        return;
+      }
+
+      revokePreview();
+      selectedFile = file;
+      selectedDimensions = dimensions;
+      selectedPreviewUrl = URL.createObjectURL(file);
+      removeExisting = false;
+      selectionError = "";
+      setStatus(imageStatus, "Replacement image ready to upload.", "success");
+      render();
+    };
+
+    input.addEventListener("change", () => {
+      const task = selectFile(input.files?.[0] || null).finally(() => {
+        if (selectionPromise === task) {
+          selectionPromise = null;
+        }
+      });
+      selectionPromise = task;
+    });
+    toggle.addEventListener("click", () => {
+      if (selectedFile) {
+        clearSelectedFile();
+        removeExisting = false;
+      } else if (initialImagePath) {
+        removeExisting = !removeExisting;
+      }
+      selectionError = "";
+      setStatus(
+        imageStatus,
+        removeExisting ? "The current image will be removed when you save." : "",
+      );
+      render();
+    });
+
+    reset();
+    return {
+      element: field,
+      initialImagePath,
+      async settle() {
+        while (selectionPromise) {
+          await selectionPromise;
+        }
+        if (selectionError) {
+          throw new Error(selectionError);
+        }
+      },
+      selectedFile: () => selectedFile,
+      desiredExistingPath: () => (removeExisting ? null : initialImagePath),
+      reset,
+      setLocked(value) {
+        locked = Boolean(value);
+        render();
+      },
+      focus() {
+        input.focus();
+      },
+    };
+  }
+
+  function buildEditForm(message, bodyElement, editButton, attachmentElement = null) {
     const form = makeElement("form", "board-edit-form");
     form.id = `edit-form-${message.id}`;
     const textareaId = `edit-body-${message.id}`;
@@ -3347,18 +3652,86 @@
     status.setAttribute("role", "status");
     status.setAttribute("aria-live", "polite");
 
-    const close = () => {
+    const imageController = buildEditImageController(message, form);
+    let editRequestId = "";
+    let replacementImagePath = "";
+    let replacementFile = null;
+    let replacementUploaded = false;
+
+    const close = async () => {
+      if (replacementImagePath) {
+        const uncertainImagePath = replacementImagePath;
+        setStatus(status, "Discarding the unfinished replacement image...");
+        let session;
+        try {
+          session = await getValidSession();
+        } catch (error) {
+          setStatus(status, error.message || "Sign in again to discard the replacement.", "error");
+          return false;
+        }
+        if (!session || !await deleteUnlinkedImage(replacementImagePath, session)) {
+          setStatus(
+            status,
+            "The replacement may already be attached. Press Save edit again to verify before canceling.",
+            "error",
+          );
+          return false;
+        }
+        replacementImagePath = "";
+        replacementFile = null;
+        replacementUploaded = false;
+        editRequestId = "";
+        // A prior edit response may have been lost after the database commit.
+        // Reload before closing so a linked replacement is never hidden behind
+        // stale message data even when Storage correctly refused to delete it.
+        try {
+          const { roots, replies } = await getBoardMessages();
+          const latestMessage = [...roots, ...replies]
+            .find((entry) => entry.id === message.id);
+          if (latestMessage?.image_path === uncertainImagePath) {
+            await loadBoard(message.id, true);
+            return true;
+          }
+        } catch {
+          // The normal board refresh will reconcile the view later.
+        }
+      }
       form.hidden = true;
       bodyElement.hidden = false;
+      if (attachmentElement) {
+        attachmentElement.hidden = false;
+      }
       textarea.value = message.body || "";
       updateCounter(form, textarea);
+      imageController?.reset();
       setStatus(status, "");
       editButton.setAttribute("aria-expanded", "false");
       editButton.focus();
+      return true;
     };
 
     textarea.addEventListener("input", () => updateCounter(form, textarea));
-    cancel.addEventListener("click", close);
+    cancel.addEventListener("click", () => {
+      if (messageMutationPromises.has(message.id)) {
+        setStatus(status, "This message is already being updated.");
+        return;
+      }
+      const task = (async () => {
+        setFormBusy(form, true);
+        try {
+          return await close();
+        } finally {
+          setFormBusy(form, false);
+          imageController?.setLocked(Boolean(replacementImagePath));
+        }
+      })();
+      messageMutationPromises.set(message.id, task);
+      void task.finally(() => {
+        if (messageMutationPromises.get(message.id) === task) {
+          messageMutationPromises.delete(message.id);
+        }
+      });
+    });
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const body = textarea.value.trim();
@@ -3375,11 +3748,53 @@
       const task = (async () => {
         setFormBusy(form, true);
         setStatus(status, "Saving edit…");
+        await imageController?.settle();
         const session = await getValidSession();
         if (!session) {
           throw new Error("Sign in again to edit this message.");
         }
-        await callUpdateMessage(message.id, body, session);
+
+        const imageFile = imageController?.selectedFile() || null;
+        let desiredImagePath = imageController
+          ? imageController.desiredExistingPath()
+          : message.image_path || null;
+        if (imageFile) {
+          if (replacementFile && replacementFile !== imageFile) {
+            throw new Error("Retry or cancel the unfinished image replacement first.");
+          }
+          if (!replacementImagePath) {
+            setStatus(status, "Preparing replacement image...");
+            editRequestId = createRequestId();
+            const reservation = await callPrepareImageUpload(
+              editRequestId,
+              imageFile.type,
+              session,
+            );
+            replacementImagePath = reservation.imagePath;
+            replacementFile = imageFile;
+            replacementUploaded = reservation.alreadyConsumed;
+          }
+          if (!replacementUploaded) {
+            setStatus(status, "Uploading replacement image...");
+            await uploadImage(imageFile, replacementImagePath, session);
+            replacementUploaded = true;
+          }
+          desiredImagePath = replacementImagePath;
+        }
+
+        setStatus(status, "Saving edit...");
+        await callUpdateMessage(
+          message.id,
+          body,
+          imageFile ? editRequestId : null,
+          desiredImagePath,
+          session,
+        );
+        replacementImagePath = "";
+        replacementFile = null;
+        replacementUploaded = false;
+        editRequestId = "";
+        await processServerImageCleanupQueue(currentSession || session);
         await loadBoard(message.id, true);
         setBoardStatus(
           boardPermissionWarning
@@ -3392,9 +3807,27 @@
       try {
         await task;
       } catch (error) {
+        if (replacementImagePath && !error.postOutcomeAmbiguous) {
+          try {
+            const session = await getValidSession();
+            if (session && await deleteUnlinkedImage(replacementImagePath, session)) {
+              replacementImagePath = "";
+              replacementFile = null;
+              replacementUploaded = false;
+              editRequestId = "";
+            }
+          } catch {
+            // Keep the same reservation for an explicit retry or cancel.
+          }
+        }
         setStatus(status, error.message || "The edit could not be saved.", "error");
         setFormBusy(form, false);
-        textarea.focus();
+        imageController?.setLocked(Boolean(replacementImagePath));
+        if (error.message?.toLowerCase().includes("image")) {
+          imageController?.focus();
+        } else {
+          textarea.focus();
+        }
       } finally {
         if (messageMutationPromises.get(message.id) === task) {
           messageMutationPromises.delete(message.id);
@@ -3402,7 +3835,11 @@
       }
     });
 
-    form.append(label, textarea, footer, status);
+    form.append(label, textarea);
+    if (imageController) {
+      form.append(imageController.element);
+    }
+    form.append(footer, status);
     editButton.addEventListener("click", () => {
       const otherEdit = boardList.querySelector(
         `.board-edit-form:not([hidden]):not([data-edit-message-id="${message.id}"])`,
@@ -3414,6 +3851,9 @@
       }
       form.hidden = false;
       bodyElement.hidden = true;
+      if (attachmentElement) {
+        attachmentElement.hidden = true;
+      }
       editButton.setAttribute("aria-expanded", "true");
       textarea.focus();
       textarea.setSelectionRange(textarea.value.length, textarea.value.length);
@@ -3504,8 +3944,9 @@
       deleted ? "(Deleted message)" : message.body || "",
     );
     article.append(body);
+    let attachment = null;
     if (!isReply && !deleted) {
-      const attachment = makeImageAttachment(message);
+      attachment = makeImageAttachment(message);
       if (attachment) {
         article.append(attachment);
       }
@@ -3552,7 +3993,7 @@
         editButton.type = "button";
         editButton.dataset.messageMutation = "";
         editButton.setAttribute("aria-expanded", "false");
-        const editForm = buildEditForm(message, body, editButton);
+        const editForm = buildEditForm(message, body, editButton, attachment);
         editButton.setAttribute("aria-controls", editForm.id);
         controls.append(editButton);
         article.append(controls, editForm);
