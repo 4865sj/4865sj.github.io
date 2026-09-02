@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src https://atdqvkkpnupphxrdoawq.supabase.co; base-uri 'none'; form-action 'self'; object-src 'none'; frame-src 'none'"
+  >
+  <meta
+    name="description"
+    content="Photos from AQIS 2026 in Daejeon, South Korea."
+  >
+  <meta name="theme-color" content="#173a5e">
+
+  <title>AQIS 2026 | Gallery | Jiwon Heo</title>
+
+  <link rel="stylesheet" href="style.css?v=20260813-9">
+  <link rel="stylesheet" href="gallery-test.css?v=20260902-1">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/sleeping-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/awake-side.png?v=20260813-3" fetchpriority="high">
+  <link rel="preload" as="script" href="board.js?v=20260813-8">
+  <link rel="preload" as="script" href="seal-bootstrap.js?v=20260813-1">
+  <link rel="expect" href="#message-card-title" blocking="render">
+</head>
+
+<body class="gallery-prototype">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="title-block">
+    <div class="title-panel">
+      <div class="container">
+        <h1><a class="site-title-link" href="index.html">Jiwon Heo</a></h1>
+
+        <nav aria-label="Contact and academic profiles">
+          <ul class="profile-links">
+            <li><a href="mailto:4865sj@gmail.com">Email</a></li>
+            <li>
+              <a
+                href="https://github.com/4865sj"
+                aria-label="GitHub (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >GitHub</a>
+            </li>
+            <li>
+              <a
+                href="https://kr.linkedin.com/in/4865sj"
+                aria-label="LinkedIn (opens in a new tab)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >LinkedIn</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <nav class="category-nav" aria-label="Pages">
+      <div class="container">
+        <ul class="category-links">
+          <li><a href="about.html">About me</a></li>
+          <li><a href="publications.html">Publication lists</a></li>
+          <li><a href="presentations.html">Presentation</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="gallery-test.html" aria-current="page">Gallery</a></li>
+          <li><a href="board.html">Board</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <article class="gallery-detail-section">
+      <div class="container">
+        <a class="gallery-back-link" href="gallery-test.html">&larr; Back to Gallery</a>
+
+        <header class="gallery-detail-heading">
+          <p class="gallery-kicker">August 2026</p>
+          <h2>AQIS 2026</h2>
+        </header>
+
+        <section
+          class="gallery-carousel"
+          aria-label="AQIS 2026 photos"
+          aria-roledescription="carousel"
+          tabindex="0"
+          data-gallery-carousel
+        >
+          <div class="gallery-carousel__viewport" data-gallery-swipe-area>
+            <figure
+              id="gallery-slide-1"
+              class="gallery-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 of 4"
+              data-gallery-slide
+            >
+              <div class="gallery-slide__image-frame">
+                <img
+                  src="gallery-images/aqis-2026/01-title-slide.jpg"
+                  alt="Jiwon Heo presenting the title slide at AQIS 2026 in Daejeon"
+                  width="4000"
+                  height="3000"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                >
+              </div>
+            </figure>
+
+            <figure
+              id="gallery-slide-2"
+              class="gallery-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 of 4"
+              data-gallery-slide
+              hidden
+            >
+              <div class="gallery-slide__image-frame">
+                <img
+                  src="assets/gallery-placeholder.svg"
+                  data-gallery-src="gallery-images/aqis-2026/02-algorithm-description.jpg"
+                  alt="Jiwon Heo explaining an algorithm during an AQIS 2026 presentation"
+                  width="4080"
+                  height="3072"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+            </figure>
+
+            <figure
+              id="gallery-slide-3"
+              class="gallery-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 of 4"
+              data-gallery-slide
+              hidden
+            >
+              <div class="gallery-slide__image-frame">
+                <img
+                  src="assets/gallery-placeholder.svg"
+                  data-gallery-src="gallery-images/aqis-2026/03-closing-slide.jpg"
+                  alt="Jiwon Heo concluding an AQIS 2026 presentation"
+                  width="4080"
+                  height="3072"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+            </figure>
+
+            <figure
+              id="gallery-slide-4"
+              class="gallery-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="4 of 4"
+              data-gallery-slide
+              hidden
+            >
+              <div class="gallery-slide__image-frame">
+                <img
+                  src="assets/gallery-placeholder.svg"
+                  data-gallery-src="gallery-images/aqis-2026/04-open-questions-cropped.jpg"
+                  alt="Jiwon Heo discussing open questions at AQIS 2026"
+                  width="3072"
+                  height="2304"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+            </figure>
+
+          </div>
+
+          <div class="gallery-carousel__controls">
+            <div class="gallery-carousel__navigation">
+              <button
+                class="button button-secondary gallery-carousel__button"
+                type="button"
+                data-gallery-previous
+                aria-disabled="true"
+                aria-label="Previous photo"
+              ><span aria-hidden="true">&larr;</span></button>
+              <span class="gallery-carousel__counter" data-gallery-counter>1 / 4</span>
+              <button
+                class="button button-secondary gallery-carousel__button"
+                type="button"
+                data-gallery-next
+                aria-disabled="false"
+                aria-label="Next photo"
+              ><span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </div>
+
+          <p class="visually-hidden" role="status" aria-live="polite" data-gallery-status></p>
+        </section>
+
+        <section class="gallery-album-comment" aria-labelledby="gallery-album-comment-title">
+          <h3 id="gallery-album-comment-title">Comment</h3>
+          <p>AQIS 2026, 2026.08.24 ~ 2026.08.28, Daejeon, South Korea</p>
+        </section>
+
+        <section class="gallery-comments" aria-labelledby="gallery-comments-title">
+          <header class="gallery-comments__heading">
+            <h3 id="gallery-comments-title">Comments</h3>
+            <span>0 comments</span>
+          </header>
+
+          <p>
+            Visitors will sign in with Google before leaving a comment. This preview shows
+            the intended layout but does not save or publish anything.
+          </p>
+
+          <button class="button" type="button" data-gallery-preview-sign-in>
+            Sign in with Google to comment
+          </button>
+          <p class="form-status" role="status" aria-live="polite" data-gallery-comment-status></p>
+
+          <form class="gallery-comment-form" aria-label="Comment editor preview">
+            <label for="gallery-test-comment">Comment preview</label>
+            <textarea
+              id="gallery-test-comment"
+              rows="4"
+              placeholder="The comment editor will become available after sign-in."
+              disabled
+            ></textarea>
+            <button class="button" type="submit" disabled>Post comment</button>
+          </form>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <aside class="message-card seal-enhanced" aria-labelledby="message-card-title">
+    <button
+      class="card-seal card-seal--sleeping card-seal--slot-2"
+      type="button"
+      aria-label="Wake the sleeping white seal"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <span class="card-seal__zzz" aria-hidden="true">Zzz&hellip;</span>
+      <span class="card-seal__alert" aria-hidden="true">!</span>
+      <span class="card-seal__facing" aria-hidden="true">
+        <span class="card-seal__sprite">
+          <img
+            class="card-seal__art card-seal__art--sleeping"
+            src="assets/seal-model-v2/sleeping-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-tail"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+          <img
+            class="card-seal__art card-seal__art--awake card-seal__art--awake-body"
+            src="assets/seal-model-v2/awake-side.png?v=20260813-3"
+            alt=""
+            width="724"
+            height="543"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+            draggable="false"
+          >
+        </span>
+      </span>
+    </button>
+    <script src="seal-bootstrap.js?v=20260813-1"></script>
+    <div class="message-card-content">
+      <p class="message-label">Board</p>
+      <form
+        class="message-form"
+        action="board.html"
+        method="post"
+        data-message-form="top-level"
+      >
+        <label id="message-card-title" class="message-title" for="gallery-album-board-message">
+          Leave a message
+        </label>
+        <textarea
+          id="gallery-album-board-message"
+          name="message"
+          rows="4"
+          maxlength="2000"
+          aria-describedby="gallery-album-board-message-note gallery-album-board-message-count"
+          data-message-body
+          required
+        ></textarea>
+        <div class="message-form-meta">
+          <span id="gallery-album-board-message-note" data-session-note>Google sign-in required.</span>
+          <span id="gallery-album-board-message-count" data-message-count>0 / 2000</span>
+        </div>
+        <button
+          class="button message-submit"
+          type="submit"
+          data-message-submit
+          data-signed-in-label="Post to Board"
+        >Sign in &amp; post</button>
+        <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <span
+      class="card-seal-status visually-hidden"
+      role="status"
+      aria-live="polite"
+    ></span>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="footer-content container">
+      <p>&copy; Jiwon Heo</p>
+      <p>Last update: 2026.09.02</p>
+    </div>
+  </footer>
+
+  <script src="gallery-test.js?v=20260901-2" defer></script>
+  <script src="board.js?v=20260813-8" defer></script>
+</body>
+</html>

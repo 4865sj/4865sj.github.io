@@ -9,13 +9,14 @@
   >
   <meta
     name="description"
-    content="News from Jiwon Heo."
+    content="Conference and research gallery of Jiwon Heo."
   >
   <meta name="theme-color" content="#173a5e">
 
-  <title>News | Jiwon Heo</title>
+  <title>Gallery | Jiwon Heo</title>
 
   <link rel="stylesheet" href="style.css?v=20260813-9">
+  <link rel="stylesheet" href="gallery-test.css?v=20260902-1">
   <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/sleeping-side.png?v=20260813-3" fetchpriority="high">
   <link rel="preload" as="image" type="image/png" href="assets/seal-model-v2/awake-side.png?v=20260813-3" fetchpriority="high">
   <link rel="preload" as="script" href="board.js?v=20260813-8">
@@ -23,7 +24,7 @@
   <link rel="expect" href="#message-card-title" blocking="render">
 </head>
 
-<body>
+<body class="gallery-prototype">
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="title-block">
@@ -61,8 +62,8 @@
           <li><a href="about.html">About me</a></li>
           <li><a href="publications.html">Publication lists</a></li>
           <li><a href="presentations.html">Presentation</a></li>
-          <li><a href="news.html" aria-current="page">News</a></li>
-          <li><a href="gallery-test.html">Gallery</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="gallery-test.html" aria-current="page">Gallery</a></li>
           <li><a href="board.html">Board</a></li>
         </ul>
       </div>
@@ -70,28 +71,34 @@
   </header>
 
   <main id="main-content">
-    <section class="content-section" aria-labelledby="news-title">
-      <div class="section-layout container">
-        <header class="section-heading">
-          <h2 id="news-title">News</h2>
+    <section class="gallery-index-section" aria-labelledby="gallery-title">
+      <div class="container">
+        <header class="gallery-page-heading">
+          <h2 id="gallery-title">Gallery</h2>
         </header>
 
-        <div class="section-content">
-          <ol class="news-list">
-            <li>
-              <time class="news-date" datetime="2026-08">August 2026</time>
-              <span class="news-separator" aria-hidden="true">|</span>
-              <p class="news-content">
-                Gave a talk titled “Classical simulation of quantum circuits with noisy magic inputs” at AQIS 2026!
-              </p>
-            </li>
-            <li>
-              <time class="news-date" datetime="2026-08">August 2026</time>
-              <span class="news-separator" aria-hidden="true">|</span>
-              <p class="news-content">This wepsite is opened!</p>
-            </li>
-          </ol>
-        </div>
+        <ul class="gallery-album-grid">
+          <li>
+            <article class="gallery-album-card">
+              <a class="gallery-album-card__link" href="gallery-test-album.html">
+                <div class="gallery-album-card__cover">
+                  <img
+                    src="gallery-images/aqis-2026/01-title-slide.jpg"
+                    alt="Jiwon Heo presenting the title slide at AQIS 2026 in Daejeon"
+                    width="4000"
+                    height="3000"
+                    loading="eager"
+                    decoding="async"
+                  >
+                </div>
+                <div class="gallery-album-card__body">
+                  <time datetime="2026-08">August 2026</time>
+                  <h3>AQIS 2026</h3>
+                </div>
+              </a>
+            </article>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
@@ -146,41 +153,37 @@
     </button>
     <script src="seal-bootstrap.js?v=20260813-1"></script>
     <div class="message-card-content">
-    <p class="message-label">Board</p>
-    <form
-      class="message-form"
-      action="board.html"
-      method="post"
-      data-message-form="top-level"
-    >
-      <label
-        id="message-card-title"
-        class="message-title"
-        for="news-message"
-      >Leave a message</label>
-      <textarea
-        id="news-message"
-        name="message"
-        rows="4"
-        maxlength="2000"
-        aria-describedby="news-message-note news-message-count"
-        data-message-body
-        required
-      ></textarea>
-      <div class="message-form-meta">
-        <span id="news-message-note" data-session-note>
-          Google sign-in required.
-        </span>
-        <span id="news-message-count" data-message-count>0 / 2000</span>
-      </div>
-      <button
-        class="button message-submit"
-        type="submit"
-        data-message-submit
-        data-signed-in-label="Post to Board"
-      >Sign in &amp; post</button>
-      <p class="form-status" data-message-status role="status" aria-live="polite"></p>
-    </form>
+      <p class="message-label">Board</p>
+      <form
+        class="message-form"
+        action="board.html"
+        method="post"
+        data-message-form="top-level"
+      >
+        <label id="message-card-title" class="message-title" for="gallery-board-message">
+          Leave a message
+        </label>
+        <textarea
+          id="gallery-board-message"
+          name="message"
+          rows="4"
+          maxlength="2000"
+          aria-describedby="gallery-board-message-note gallery-board-message-count"
+          data-message-body
+          required
+        ></textarea>
+        <div class="message-form-meta">
+          <span id="gallery-board-message-note" data-session-note>Google sign-in required.</span>
+          <span id="gallery-board-message-count" data-message-count>0 / 2000</span>
+        </div>
+        <button
+          class="button message-submit"
+          type="submit"
+          data-message-submit
+          data-signed-in-label="Post to Board"
+        >Sign in &amp; post</button>
+        <p class="form-status" data-message-status role="status" aria-live="polite"></p>
+      </form>
     </div>
     <span
       class="card-seal-status visually-hidden"
