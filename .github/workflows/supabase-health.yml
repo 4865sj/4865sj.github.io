@@ -1,0 +1,38 @@
+name: Supabase availability
+
+on:
+  schedule:
+    # UTC; 03:17, 09:17, 15:17 and 21:17 in Korea.
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/supabase-health.yml'
+      - '.github/scripts/check-supabase.ps1'
+      - 'board.js'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-availability
+  cancel-in-progress: false
+
+jobs:
+  database-read:
+    if: github.repository == '4865sj/4865sj.github.io'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out public client configuration
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            .github
+            board.js
+          sparse-checkout-cone-mode: false
+      - name: Verify Supabase database access
+        shell: pwsh
+        run: ./.github/scripts/check-supabase.ps1
